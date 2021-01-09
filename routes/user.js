@@ -19,7 +19,7 @@ router.post('/user/create', (req, res) => {
             db.User.create(req.body, (err, data) => {
                 if (err) console.log(err);
                 else {
-                    res.status(200).end();
+                    res.json(data).end();
                 }
             })
         }
