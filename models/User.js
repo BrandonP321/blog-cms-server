@@ -21,26 +21,20 @@ const schema = new Schema({
     }
 })
 
-schema.pre('save', next => {
-    var user = this;
+// hash password before storing it
+schema.pre('save', async function save(next) {
+    if (!this.isModified('password')) return next();
 
-    // only hash password if it has been modified (is new)
-    if (!user.isModified('password')) return next();
+    try {
+        const salt = await bcrypt.genSalt(10);
 
-    // generate salt
-    bcrypt.genSalt(10, (err, salt) => {
-        if (err) return next(err);
+        this.password = await bcrypt.hash(this.password, salt);
 
-        // hash password using salt
-        bcrypt.hash(user.password, salt, (err, hash) => {
-            if (err) return next(err);
-
-            // override the cleartext password with the hashed one
-            user.password = hash;
-            next();
-        })
-    })
-})
+        return next();
+    } catch (err) {
+        return next(err);
+    }
+});
 
 // add method to schema to compare given password to encrypted password
 schema.methods.validatePassword = password => {

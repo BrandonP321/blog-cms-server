@@ -26,7 +26,6 @@ router.post('/user/create', (req, res) => {
 })
 
 router.post('/user/login', (req, res) => {
-
 })
 
 router.put('/user/update/:id', (req, res) => {
