@@ -8,7 +8,6 @@ router.get('/user/all', (req, res) => {
 })
 
 router.post('/user/create', (req, res) => {
-    console.log(req.body)
     // first check if user with same email already exists
     db.User.find({ email: req.body.email }, (err, data) => {
         // if user exists, send status 409 to client
@@ -24,6 +23,10 @@ router.post('/user/create', (req, res) => {
             })
         }
     })
+})
+
+router.post('/user/login', (req, res) => {
+
 })
 
 router.put('/user/update/:id', (req, res) => {
