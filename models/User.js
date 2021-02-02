@@ -37,9 +37,9 @@ schema.pre('save', async function save(next) {
 });
 
 // add method to schema to compare given password to encrypted password
-schema.methods.validatePassword = password => {
-    return bcrypt.compareSync(password, this.password)
-}
+schema.methods.validatePassword = async function validatePassword(data) {
+    return bcrypt.compare(data, this.password);
+  };
 
 const User = mongoose.model('User', schema)
 
