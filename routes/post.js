@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const mongoose = require('mongoose');
 const db = require('../models');
 const authenticateToken = require('./authenticateToken')
 
@@ -32,7 +33,8 @@ router.get('/post/:id', (req, res) => {
 })
 
 router.get('/user/:userId/post/all', (req, res) => {
-    db.Post.find({ creatorId: req.params.userId }, (err, data) => {
+    db.Post.find({ creator: mongoose.Types.ObjectId(req.params.userId) }, (err, data) => {
+        console.log(data)
         if (err) console.log(err);
         else res.json(data).end();
     })
